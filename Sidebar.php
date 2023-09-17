@@ -24,7 +24,7 @@
                 </span>
 
                 <div class="text logo-text">
-                    <span class="name">acoding</span>
+                    <span class="name">Anun</span>
                     <span class="profession">Web developer</span>
                 </div>
             </div>
