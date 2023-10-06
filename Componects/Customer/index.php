@@ -58,8 +58,9 @@
                         <td><?php echo $customer['phoneNumber']; ?></td>
                         <td><?php echo $customer['email']; ?></td>
                         <td>
-                            <button class="btn" onclick="showDeleteConfirmation('<?php echo $customer['cusCode']; ?>')">Delete</button>
-                        </td>
+                        <button class="btn" onclick="showEditPopup('<?php echo $customer['cusCode']; ?>')">Edit</button>
+                        <button class="btn" onclick="showDeleteConfirmation('<?php echo $customer['cusCode']; ?>')">Delete</button>
+                    </td>
                     </tr>
                     <?php
                         }
@@ -107,6 +108,48 @@
         </div>
     </div>
 
+    <!-- The edit data modal -->
+    <div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>Edit Customer</h3>
+        <form id="editForm">
+            <span class="close" onclick="closeEditPopup()">&times;</span>
+            <input type="hidden" id="editCusCode" name="cusCode">
+            <label for="editFirstName">First Name:</label>
+            <input type="text" id="editFirstName" name="firstName" required><br>
+
+            <label for="editLastName">Last Name:</label>
+            <input type="text" id="editLastName" name="lastName" required><br>
+
+            <!-- Add other fields for editing here -->
+            <label for="editAddress">Address:</label>
+            <input type="text" id="editAddress" name="address" required><br>
+
+            <label for="editSubDistrict">Sub-District:</label>
+            <input type="text" id="editSubDistrict" name="subDistrict" required><br>
+
+            <label for="editDistrict">District:</label>
+            <input type="text" id="editDistrict" name="District" required><br>
+
+            <label for="editProvince">Province:</label>
+            <input type="text" id="editProvince" name="province" required><br>
+
+            <label for="editPostalCode">Postal Code:</label>
+            <input type="text" id="editPostalCode" name="postalCode" required><br>
+
+            <label for="editPhoneNumber">Phone Number:</label>
+            <input type="text" id="editPhoneNumber" name="phoneNumber" required><br>
+
+            <label for="editEmail">Email:</label>
+            <input type="text" id="editEmail" name="email" required><br>
+
+            <!-- Include other edited fields here -->
+
+            <button type="button" onclick="updateData()" class="btn">Save Changes</button>
+        </form>
+    </div>
+    </div>
+
     <!-- The modal for delete confirmation -->
     <div id="deleteConfirmationModal" class="modal">
         <div class="modal-content">
@@ -117,6 +160,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- ------------------Add----------------------- -->
     <script>
@@ -239,5 +284,99 @@
             xhr.send();
         }
     </script>
+    <script>
+            // Function to show the edit data modal
+        function showEditPopup(cusCode) {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+        
+            // Fetch customer data based on cusCode and populate the edit form
+            const xhr = new XMLHttpRequest();
+            const url = "ApiCustomer/index.php?cusCode=" + cusCode;
+        
+            xhr.open("GET", url, true);
+        
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const customer = JSON.parse(xhr.responseText)[0];
+                        document.getElementById('editCusCode').value = customer.cusCode;
+                        document.getElementById('editFirstName').value = customer.firstName;
+                        document.getElementById('editLastName').value = customer.lastName;
+                        document.getElementById('editAddress').value = customer.address;
+                        document.getElementById('editSubDistrict').value = customer.subDistrict;
+                        document.getElementById('editDistrict').value = customer.District;
+                        document.getElementById('editProvince').value = customer.province;
+                        document.getElementById('editPostalCode').value = customer.postalCode;
+                        document.getElementById('editPhoneNumber').value = customer.phoneNumber;
+                        document.getElementById('editEmail').value = customer.email;
+                    } else {
+                        alert("Error: " + xhr.status);
+                    }
+                }
+            };
+        
+            xhr.send();
+        }
+
+        // Function to close the edit data modal
+        function closeEditPopup() {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+
+        // Function to update customer data
+        function updateData() {
+            const cusCode = document.getElementById('editCusCode').value;
+            const firstName = document.getElementById('editFirstName').value;
+            const lastName = document.getElementById('editLastName').value;
+            const address = document.getElementById('editAddress').value;
+            const subDistrict = document.getElementById('editSubDistrict').value;
+            const district = document.getElementById('editDistrict').value;
+            const province = document.getElementById('editProvince').value;
+            const postalCode = document.getElementById('editPostalCode').value;
+            const phoneNumber = document.getElementById('editPhoneNumber').value;
+            const email = document.getElementById('editEmail').value;
+        
+            const data = {
+                cusCode: cusCode,
+                firstName: firstName,
+                lastName: lastName,
+                address: address,
+                subDistrict: subDistrict,
+                District: district,
+                province: province,
+                postalCode: postalCode,
+                phoneNumber: phoneNumber,
+                email: email,
+            };
+        
+            const xhr = new XMLHttpRequest();
+            const url = "ApiCustomer/index.php";
+        
+            xhr.open("PUT", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+        
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            alert(response.message);
+                            closeEditPopup();
+                            window.location.reload(); // Reload the page to show the updated data
+                        } else {
+                            alert(response.message);
+                        }
+                    } else {
+                        alert("Error: " + xhr.status);
+                    }
+                }
+            };
+        
+            xhr.send(JSON.stringify(data));
+        }
+
+</script>
 </body>
 </html>

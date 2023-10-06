@@ -1,4 +1,4 @@
-/* Style for the insert modal */
+Style for the insert modal
 #insertModal {
     display: none;
     position: fixed;
@@ -62,6 +62,76 @@
 
 #insertModal .close:hover,
 #insertModal .close:focus {
+    color: darkred; /* Change hover color to dark red */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ---------------------------------------- */
+
+#editModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 20px;
+}
+
+#editModal .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    position: relative;
+}
+
+#editModal .modal-content h3 {
+    margin-bottom: 20px;
+}
+
+#editModal label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#editModal input {
+    width: 70%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#editModal button {
+    background-color: #4CAF50;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    width: 10rem;
+    font-size: 20px;
+}
+
+#editModal button:hover {
+    opacity: 0.8;
+}
+
+#editModal .close {
+    color: red; /* Change color to red */
+    font-size: 80px; /* Increase font size */
+    font-weight: bold;
+    position: absolute;
+    right: 26px;
+    top: -16px;
+}
+
+#editModal .close:hover,
+#editModal .close:focus {
     color: darkred; /* Change hover color to dark red */
     text-decoration: none;
     cursor: pointer;
